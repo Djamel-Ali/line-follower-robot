@@ -1,0 +1,10 @@
+.idea
+.gradle
+build
+*.iml
+*.class
+# Eclips files
+.project
+.classpath
+.settings
+

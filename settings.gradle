@@ -1,0 +1,3 @@
+rootProject.name = 'examples'
+
+include 'ev3dev-lang-java'
