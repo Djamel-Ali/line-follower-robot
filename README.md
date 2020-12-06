@@ -50,6 +50,8 @@ Alternatively, you can also work only with one project at a time
 ./gradlew :ev3dev-lang-java:deployRun # only upload and run 'ev3dev-lang-java' project
 ```
 
+Or by using the EV3 brick (Using its buttons, we go to: **File Browser / ev3dev-lang-java-0.6.1.sh** then we click on the central button (the Enter button) to execute it).
+
 To change the class to be run in some example project, modify its `config.gradle` file.
 If you want to run the program from ev3dev menu, you will have to re-upload it.
 
