@@ -1,9 +1,9 @@
 # A Line Follower Robot (using ev3dev-lang-java) :
 ___
-## PART I : Hello World
+## PART I : Hello World and other basic programs
 
-This repository contains an example ready to be used with
-The ev3dev-lang-java libraries (this example displays 'Hello World').
+This repository contains some examples ready to be used with
+The ev3dev-lang-java libraries.
 
 ## Prerequisites
 
@@ -35,11 +35,10 @@ You can build the project and upload all programs with their dependencies (In ou
 ```
 
 
-You can then run them/it from the ev3dev menu in the `examples` subdirectory
-(by following these steps for example) :
+We can also execute the programs on the robots directly via the terminal (after the deployment of the code of course), and this by following the following steps for example :
 ```sh
 ssh robot@ev3dev.local
-cd examples/
+cd ali-idrissou-plong-2020/
 ./ev3dev-lang-java-0.6.1.sh 
 ```
 
