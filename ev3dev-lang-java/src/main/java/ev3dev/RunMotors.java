@@ -5,7 +5,7 @@ import ev3dev.sensors.Battery;
 import lejos.hardware.port.MotorPort;
 import lejos.utility.Delay;
 
-public class TurningMotors {
+public class RunMotors {
 
     public static void main(final String[] args) {
 
