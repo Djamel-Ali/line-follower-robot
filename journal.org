@@ -1,0 +1,13 @@
+* MEMBRES
+** ALI Djamel (0769668162), djamel.ali1920@gmail.com
+** IDRISSOU Hamza (0666811649), idrissouhamza044@gmail.com
+* 3/11/2020
+** RDV mardi 10 devant Sophie Germain pour prendre le robot
+* 18/11/2020
+** FAIT:
+* OS installé
+* Hello World
+** À faire :
+* tourner le moteur
+* utiliser le capteur RGB
+* réfléchir à un algo de reco de couleurs
