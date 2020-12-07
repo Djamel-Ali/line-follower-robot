@@ -34,6 +34,7 @@ You can build the project and upload all programs with their dependencies (In ou
 ./gradlew deploy
 ```
 
+
 You can then run them/it from the ev3dev menu in the `examples` subdirectory
 (by following these steps for example) :
 ```sh
