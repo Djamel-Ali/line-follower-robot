@@ -2,17 +2,17 @@
 ** ALI Djamel (0769668162), djamel.ali1920@gmail.com
 ** IDRISSOU Hamza (0666811649), idrissouhamza044@gmail.com
 * 3/11/2020
-** RDV mardi 10 devant Sophie Germain pour prendre le robot
+*** RDV mardi 10 devant Sophie Germain pour prendre le robot
 * 18/11/2020
 ** FAIT:
-* OS installé
-* Hello World
+*** OS installé
+*** Hello World foncionne
 ** À faire :
-* tourner le moteur
-* utiliser le capteur RGB
-* réfléchir à un algo de reconnaissance de couleurs
+*** tourner le moteur
+*** utiliser le capteur RGB
+*** réfléchir à un algo de reconnaissance de couleurs
 * 02/12/2020
 ** À faire :
-* Il faut utiliser la bonne bibliothèque ('ev3dev' au lieu de 'lejos') pour tourner le moteur
-* utiliser le capteur RGB
-* réfléchir à un algo de reconnaissance de couleurs
+*** Il faut utiliser la bonne bibliothèque ('ev3dev' au lieu de 'lejos') pour tourner le moteur
+*** Capter un triplet RGB avec le capteur de couleurs
+*** Apprentissage de couleurs : savoir distinguer le fond de la ligne
