@@ -24,5 +24,5 @@
 ** À faire :
 *** Terminer l'algorithme d'apprentissage.
 *** Faire des tests (de reconnaissance basé sur ce qui a été appris dans la phase d'apprentissage).
-*** Faire une liste des pièces manquantes.
+*** Faire une liste des pièces manquantes (c.f. ./pieces_manquantes_ou_defectueuse.zip).
 *** Aller récupérer les pièces manquantes Mercredi 16/12/2020 à 11:00 à Sophie Germain.
