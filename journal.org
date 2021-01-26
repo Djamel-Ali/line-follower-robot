@@ -4,7 +4,7 @@
 * 3/11/2020
 *** RDV mardi 10 devant Sophie Germain pour prendre le robot
 * 18/11/2020
-** FAIT:
+** FAIT :
 *** OS installé
 *** Hello World foncionne
 ** À faire :
@@ -16,3 +16,13 @@
 *** Il faut utiliser la bonne bibliothèque ('ev3dev' au lieu de 'lejos') pour tourner le moteur
 *** Capter un triplet RGB avec le capteur de couleurs
 *** Apprentissage de couleurs : savoir distinguer le fond de la ligne
+* 09/12/2020
+** Fait :
+*** La brique commande deux moteurs qui peuvent bouger à des vitesses différentes et dans les 2 sens.
+*** Récupérer les valeurs RGB en pointant le capteur sur une couleur.
+*** Début de la partie 'Apprentissage' (pas encore terminée).
+** À faire :
+*** Terminer l'algorithme d'apprentissage.
+*** Faire des tests (de reconnaissance basé sur ce qui a été appris dans la phase d'apprentissage).
+*** Faire une liste des pièces manquantes (c.f. ./pieces_manquantes_ou_defectueuse.zip).
+*** Aller récupérer les pièces manquantes Mercredi 16/12/2020 à 11:00 à Sophie Germain.
