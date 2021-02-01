@@ -16,6 +16,8 @@ The Prerequisites to use this project are:
 Note: Update the EV3Dev kernel
 https://www.ev3dev.org/docs/tutorials/upgrading-ev3dev/
 
+(By first connecting to the brick (by ssh for example : ``` ssh robot@ev3dev.local ```))
+
 ```
 sudo apt-get update
 sudo apt-get install linux-image-ev3dev-ev3
