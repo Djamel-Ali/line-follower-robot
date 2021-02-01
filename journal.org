@@ -28,7 +28,7 @@
 *** Aller récupérer les pièces manquantes Mercredi 16/12/2020 à 11:00 à Sophie Germain.
 * 27/01/2021
 ** Fait :
-*** Algorithme d'apprentissage.
+*** Algorithme d'apprentissage (branche develop).
 *** Remonter le robot en ajoutant les pièces manquantes.
 ** À faire :
 *** Faire des tests (de reconnaissance basé sur ce qui a été appris dans la phase d'apprentissage).
