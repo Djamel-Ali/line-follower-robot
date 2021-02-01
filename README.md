@@ -31,7 +31,15 @@ Once you have all steps done, continue with the next section.
 Before proceeding further, you need to change the brick connection parameters
 in the `config.gradle` file in the main directory.
 
+Before deploying, you can make sure (if you want) that the brick is properly connected to your machine by typing the command :
+
+```sh
+./gradlew testConnection
+```
+
+
 You can build the project and upload all programs with their dependencies (In our case we have only one program) with this commands:
+
 ```sh
 ./gradlew deploy
 ```
@@ -60,6 +68,12 @@ If you want to run the program from ev3dev menu, you will have to re-upload it.
 To remove all samples from the brick, just run:
 ```sh
 ./gradlew undeploy
+```
+
+You can see the list of commands you can use in this project by typing the command :
+
+```sh
+./gradlew tasks
 ```
 
 ## Javadocs
