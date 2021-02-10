@@ -1,6 +1,7 @@
-package ev3dev.utils;
+package ev3dev.model;
 
 import java.util.Arrays;
+import java.util.StringJoiner;
 
 public class Color {
 
@@ -39,9 +40,9 @@ public class Color {
 
     @Override
     public String toString() {
-        return "\n\t  NAME == " + getName() +" :"+
-                "\n\t  R == " + rgbValues[0] +
-                "\n\t  G == " + rgbValues[1] +
-                "\n\t  B == " + rgbValues[2];
+        return new StringJoiner(", ", Color.class.getSimpleName() + "[", "]")
+                .add("name='" + name + "'")
+                .add("rgbValues=" + Arrays.toString(rgbValues))
+                .toString();
     }
 }

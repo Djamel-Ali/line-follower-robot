@@ -1,6 +1,6 @@
 package ev3dev.sensors;
 
-import ev3dev.utils.Color;
+import ev3dev.model.Color;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
