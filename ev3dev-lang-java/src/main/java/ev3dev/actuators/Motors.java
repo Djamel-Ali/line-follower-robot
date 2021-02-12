@@ -1,19 +1,23 @@
 package ev3dev.actuators;
 
 import ev3dev.actuators.lego.motors.EV3LargeRegulatedMotor;
-import ev3dev.sensors.Battery;
 import lejos.hardware.port.MotorPort;
-import lejos.utility.Delay;
 
-public class RunMotors {
+import java.net.MalformedURLException;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+
+public class Motors {
     // Vars
     private final EV3LargeRegulatedMotor leftMotor, rightMotor;
     private int leftMotorSpeed, rightMotorSpeed;
 
-    public RunMotors() {
+    public Motors(int _leftMotorSpeed, int _rightMotorSpeed) throws RemoteException, MalformedURLException, NotBoundException {
         System.out.println("Creating Motor A & D");
         leftMotor = new EV3LargeRegulatedMotor(MotorPort.A);
         rightMotor = new EV3LargeRegulatedMotor(MotorPort.D);
+        leftMotorSpeed = _leftMotorSpeed;
+        rightMotorSpeed = _rightMotorSpeed;
 
         //To Stop the motor in case of pkill java for example
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
@@ -22,58 +26,57 @@ public class RunMotors {
             rightMotor.stop();
         }));
 
+        // Defining the Stop mode
         System.out.println("Defining the Stop mode");
         leftMotor.brake();
         rightMotor.brake();
 
+        // Defining motor speed
         System.out.println("Defining motor speed");
-        leftMotorSpeed = 240;
-        rightMotorSpeed = 240;
         leftMotor.setSpeed(leftMotorSpeed);
         rightMotor.setSpeed(rightMotorSpeed);
     }
 
-    public void startTurning() {
-
-        System.out.println("Go Forward with the motors");
+    // Go Forward with the motors
+    public void moveForward(){
         leftMotor.forward();
         rightMotor.forward();
+    }
 
-        Delay.msDelay(3000);
-
-        System.out.println("Stop motors");
+    // Stop motors
+    public void stopMotors(){
         leftMotor.stop();
         rightMotor.stop();
+    }
 
-        System.out.println("Go Backward with the motors");
+    // Go Backward with the motors
+    public void moveBackward(){
         leftMotor.backward();
         rightMotor.backward();
+    }
 
-        Delay.msDelay(3000);
 
-        System.out.println("Stop motors");
-        leftMotor.stop();
-        rightMotor.stop();
+    public EV3LargeRegulatedMotor getLeftMotor() {
+        return leftMotor;
+    }
 
-        System.out.println("Checking Battery");
-        System.out.println("Voltage: " + Battery.getInstance().getVoltage());
-
-        System.exit(0);
+    public EV3LargeRegulatedMotor getRightMotor() {
+        return rightMotor;
     }
 
     public int getLeftMotorSpeed() {
         return leftMotorSpeed;
     }
 
-    public void setLeftMotorSpeed(int _leftMotorSpeed) {
-        this.leftMotorSpeed = _leftMotorSpeed;
+    public void setLeftMotorSpeed(int leftMotorSpeed) {
+        this.leftMotorSpeed = leftMotorSpeed;
     }
 
     public int getRightMotorSpeed() {
         return rightMotorSpeed;
     }
 
-    public void setRightMotorSpeed(int _rightMotorSpeed) {
-        this.rightMotorSpeed = _rightMotorSpeed;
+    public void setRightMotorSpeed(int rightMotorSpeed) {
+        this.rightMotorSpeed = rightMotorSpeed;
     }
 }

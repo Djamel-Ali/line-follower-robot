@@ -1,7 +1,7 @@
 package ev3dev.sensors;
 
-import ev3dev.sensors.ev3.EV3ColorSensor;
 import ev3dev.model.Color;
+import ev3dev.sensors.ev3.EV3ColorSensor;
 import lejos.hardware.port.SensorPort;
 import lejos.robotics.SampleProvider;
 import lombok.extern.slf4j.Slf4j;
@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import static ev3dev.sensors.Button.ENTER;
-import static java.lang.Math.sqrt;
 
 // The main method of this class is : startLearning(int nb_of_color_to_learn, int nb_of_measures_per_color)
 // And at the output of the main loop, we could retrieve the average values of the learned colors
@@ -30,10 +29,10 @@ public class LearningColors {
     private static final int FIVE_SECONDS = 5000;
 
     // The maximum distance allowed between 2 colors.
-    private static final double MAX_DISTANCE_ALLOWED = 70;
+    private static final double MAX_ALLOWED_DISTANCE = 70;
 
     // For Robot Configuration
-    private static EV3ColorSensor color1;
+    private static EV3ColorSensor ev3ColorSensor;
 
 
     // Constructor
@@ -50,9 +49,9 @@ public class LearningColors {
 
     public void startLearning(int nb_of_color_to_learn, int nb_of_measures_per_color) {
 
-        color1 = new EV3ColorSensor(SensorPort.S1);
+        ev3ColorSensor = new EV3ColorSensor(SensorPort.S1);
 
-        SampleProvider sampleProvider = color1.getRGBMode();
+        SampleProvider sampleProvider = ev3ColorSensor.getRGBMode();
 
         System.out.println("\n\t PREPARE FOR RGB MODE" +
                 "\n\t " + nb_of_color_to_learn + " COLOR(S) TO LEARN,\n\t " + nb_of_measures_per_color +
@@ -104,16 +103,16 @@ public class LearningColors {
                     // (j > 0) : The array of acceptable measures already contains values, ( so we have to
                     //  calculate the distance of this last measurement from the current average color )
                     else {
-                        distance = getDistance(average_color.getRgbValues(), sample);
+                        distance = Color.getDistance(average_color.getRgbValues(), sample);
 
                         // Repeat the measurements (from the beginning).
-                        if (distance > MAX_DISTANCE_ALLOWED) {
+                        if (distance > MAX_ALLOWED_DISTANCE) {
                             measure_counter = 0;
                             average_color.reset(); // (average color : R = 0, G = 0, B = 0)
                             acceptable_measures.clear();
 
                             System.out.println("\n### ( distance == " + distance + " > MAX_DISTANCE_ALLOWED == " +
-                                    MAX_DISTANCE_ALLOWED + " ) ###\n### Repeat the measurements (from the beginning) ###\n");
+                                    MAX_ALLOWED_DISTANCE + " ) ###\n### Repeat the measurements (from the beginning) ###\n");
                         }
 
                         // Add this last color to the Acceptable Measurements table
@@ -128,7 +127,7 @@ public class LearningColors {
                             System.out.println("\n   Measure " + measure_counter + " accepted\n");
                         }
                     }
-                    if (distance < MAX_DISTANCE_ALLOWED) {
+                    if (distance < MAX_ALLOWED_DISTANCE) {
                         System.out.println("\n\t MEASURE == " + measure_counter + ",\n\t DISTANCE == " + distance +
                                 "\n\t AVERAGE COLOR : " + average_color + "\n\n\t ACCEPTABLE_MEASURE[" + measure_counter + "] : "
                                 + acceptable_measures.get(measure_counter));
@@ -137,7 +136,7 @@ public class LearningColors {
                     // Reset everything to 0 before proceeding to another measurement.
                     Arrays.fill(sample, 0);
 
-                } while (distance > MAX_DISTANCE_ALLOWED);
+                } while (distance > MAX_ALLOWED_DISTANCE);
             }
             //  Save the average values of the color just learned.
 //            listOfLearnedColors.add(color_index, average_color);
@@ -154,12 +153,6 @@ public class LearningColors {
         }
     }
 
-
-    public static double getDistance(float[] rgb_color1, float[] rgb_color2) {
-        return sqrt(Math.pow(rgb_color1[0] - rgb_color2[0], 2) +
-                Math.pow(rgb_color1[1] - rgb_color2[1], 2) +
-                Math.pow(rgb_color1[2] - rgb_color2[2], 2));
-    }
 
     public static float[] getAverageColor(ArrayList<Color> arrayOfColors) {
 
