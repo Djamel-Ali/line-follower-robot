@@ -31,5 +31,14 @@
 *** Algorithme d'apprentissage (branche develop).
 *** Remonter le robot en ajoutant les pièces manquantes.
 ** À faire :
-*** Faire des tests (de reconnaissance basé sur ce qui a été appris dans la phase d'apprentissage).
+*** Faire des tests (de reconnaissance basé sur ce qui a été appris dans la phase d'apprentissage) sur des lignes droites.
 *** Suivre une ligne droite.
+* 10/02/2021
+** Fait :
+*** Algorithme d'apprentissage (version finale dans la branche master)
+*** Suivre une ligne droite.
+*** Des testes ont été faits (testes de reconnaissance basé sur ce qui a été appris dans la phase d'apprentissage) sur des lignes droites.
+** À faire :
+*** Suivre des lignes courbes.
+*** Faire des tests (de reconnaissance basé sur ce qui a été appris dans la phase d'apprentissage) sur des lignes courbes.
+
