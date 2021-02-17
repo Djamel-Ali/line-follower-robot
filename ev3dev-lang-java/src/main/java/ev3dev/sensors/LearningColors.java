@@ -122,7 +122,7 @@ public class LearningColors {
                             System.arraycopy(sample, 0, acceptable_measures.get(measure_counter).getRgbValues(), 0, 3);
 
                             // update average color
-                            average_color.setRgbValues(getAverageColor(acceptable_measures));
+                            average_color.setRgbValues(Color.getAverageColor(acceptable_measures));
 
                             System.out.println("\n   Measure " + measure_counter + " accepted\n");
                         }
@@ -151,36 +151,6 @@ public class LearningColors {
         for (Color c : listOfLearnedColors) {
             System.out.println(c);
         }
-    }
-
-
-    public static float[] getAverageColor(ArrayList<Color> arrayOfColors) {
-
-        float[] average = new float[3];
-        float totalRed = 0;
-        float totalGreen = 0;
-        float totalBlue = 0;
-        int counter = 0;
-
-        for (Color arrayOfColor : arrayOfColors) {
-            totalRed += arrayOfColor.getRgbValues()[0];
-            totalGreen += arrayOfColor.getRgbValues()[1];
-            totalBlue += arrayOfColor.getRgbValues()[2];
-            counter++;
-        }
-
-        try {
-            average[0] = totalRed / counter;
-            average[1] = totalGreen / counter;
-            average[2] = totalBlue / counter;
-        } catch (ArithmeticException exception) {
-            System.out.println("\n\t -- Can't divide a number by 0\n");
-            exception.printStackTrace();
-        } catch (NullPointerException exception) {
-            System.out.println("\n\t -- NullPointerException in getAverageColor method\n");
-            exception.printStackTrace();
-        }
-        return average;
     }
 
 

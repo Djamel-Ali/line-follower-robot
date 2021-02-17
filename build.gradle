@@ -37,6 +37,7 @@ subprojects {
 
         implementation("ch.qos.logback:logback-classic:1.2.3")
         implementation 'org.apache.commons:commons-lang3:3.6'
+        implementation 'com.github.ev3dev-lang-java:ev3dev-lang-java:2.4.9-SNAPSHOT'
     }
 
     //Compile

@@ -30,7 +30,7 @@ class LearningColorsTest {
         arrayOfColors.set(1, green);
         arrayOfColors.set(2, blue);
         float[] average ;
-        average = LearningColors.getAverageColor(arrayOfColors);
+        average = Color.getAverageColor(arrayOfColors);
         System.out.println("\n\tR= "+average[0] +", G= "+average[1]+", B= "+average[2]+"\n");
     }
 
