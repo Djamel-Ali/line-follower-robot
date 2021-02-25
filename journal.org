@@ -43,7 +43,7 @@
 *** Faire des tests (de reconnaissance basé sur ce qui a été appris dans la phase d'apprentissage) sur des lignes courbes.
 * 24/02/2021
 ** Fait :
-*** Suivre des lignes courbes (trop lent et n'arrive pas à bien suivre les virages ayant un angle d'environ 90° et plus).
+*** Suivre des lignes courbes (trop lent et n'arrive pas à bien suivre les virages ayant un angle d'environ 90° et plus); (c.f branche develop)
 *** Tester si l'exception générée lors de l'initialisation des moteurs vient du matériel (moteurs, câbles, brique) ou bien du logiciel (finalement, ce n'est pas un problème matériel).
 ** À faire :
 *** Améliorer l'algorithme du suiveur de lignes courbes (vitesse + précision) et finir l'algorithme PID déjà commencé.
