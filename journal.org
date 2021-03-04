@@ -49,3 +49,10 @@
 *** Améliorer l'algorithme du suiveur de lignes courbes (vitesse + précision) et finir l'algorithme PID déjà commencé.
 *** Réinstaller ev3dev et voir si l'exception liée à l'initialisation des moteurs (générée en moyenne 1 fois sur 2) persiste encore ou pas.
 *** Faire des tests sur diverses lignes courbes.
+* 03/03/2021
+** Fait :
+*** Réinstallation de ev3dev (exception liée à l'initialisation des moteurs réglée).
+*** Petite modification dans le montage du robot (la roue arrière tourne maintenant dans le bon sens dans les virages au lieu de glisser).
+** À faire :
+*** Améliorer l'algorithme du suiveur de lignes courbes (vitesse + précision) et finir l'algorithme PID déjà commencé.
+*** Faire des tests sur diverses lignes courbes.
