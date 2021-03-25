@@ -51,7 +51,7 @@
 *** Faire des tests sur diverses lignes courbes.
 * 03/03/2021
 ** Fait :
-*** Réinstallation de ev3dev (exception liée à l'initialisation des moteurs réglée).
+*** Réinstallation de l'OS (leJOS EV3 au lieu de ev3dev) (exception liée à l'initialisation des moteurs réglée).
 *** Petite modification dans le montage du robot (la roue arrière tourne maintenant dans le bon sens dans les virages au lieu de glisser).
 ** À faire :
 *** Améliorer l'algorithme du suiveur de lignes courbes (vitesse + précision) et finir l'algorithme PID déjà commencé.
