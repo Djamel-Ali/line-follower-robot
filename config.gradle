@@ -1,9 +1,7 @@
-import java.nio.file.Paths
-
 // Project configuration
 brick.pref {
     // Brick connection parameters //
-    sshHost = "10.42.0.248"
+    sshHost = "10.0.1.1"
     sshUser = "robot"
     sshPassword = "maker"
 
