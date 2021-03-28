@@ -1,14 +1,13 @@
-package ev3dev.model;
+package edu.robots.model;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.StringJoiner;
 
-import static java.lang.Math.sqrt;
+import lejos.robotics.SampleProvider;
 
 public class Color {
 
-    // Attributes
+	  // Attributes
     private String name;
     private float[] rgbValues;
 
@@ -46,7 +45,7 @@ public class Color {
     }
 
     public static double getDistance(float[] rgb_color1, float[] rgb_color2) {
-        return sqrt(Math.pow(rgb_color1[0] - rgb_color2[0], 2) +
+        return Math.sqrt(Math.pow(rgb_color1[0] - rgb_color2[0], 2) +
                 Math.pow(rgb_color1[1] - rgb_color2[1], 2) +
                 Math.pow(rgb_color1[2] - rgb_color2[2], 2));
     }
@@ -135,9 +134,31 @@ public class Color {
 
     @Override
     public String toString() {
-        return new StringJoiner(", ", Color.class.getSimpleName() + "[", "]")
-                .add("name='" + name + "'")
-                .add("rgbValues=" + Arrays.toString(rgbValues))
-                .toString();
+    	StringBuilder str = new StringBuilder("[");
+    	
+    	str.append(Color.class.getSimpleName());
+    	str.append("]");
+    	str.append(", name='");
+    	str.append(name);
+    	str.append("'");
+    	str.append(", rgbValues=");
+    	str.append(Arrays.toString(rgbValues));
+    	
+    	return str.toString();
+       
     }
+
+	public static float[] fetchDenormalizedSample(SampleProvider _sampleProvider) {
+		
+		//local variables :
+		float[] my_sample = new float[_sampleProvider.sampleSize()];
+		
+		_sampleProvider.fetchSample(my_sample, 0);
+		my_sample[0] = my_sample[0] * 255;
+		my_sample[1] = my_sample[1] * 255;
+		my_sample[2] = my_sample[2] * 255;
+
+		return my_sample;
+	}
+    
 }

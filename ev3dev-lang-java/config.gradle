@@ -1,4 +1,0 @@
-// Subproject configuration
-brick.pref {
-    mainClass = "ev3dev.MainClass"
-}

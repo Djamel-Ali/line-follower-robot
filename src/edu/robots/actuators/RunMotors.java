@@ -1,16 +1,15 @@
-package ev3dev.actuators;
-
-import ev3dev.actuators.lego.motors.EV3LargeRegulatedMotor;
-import ev3dev.sensors.Battery;
-import lejos.hardware.port.MotorPort;
-import lejos.utility.Delay;
+package edu.robots.actuators;
 
 import java.net.MalformedURLException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 
+import lejos.hardware.motor.EV3LargeRegulatedMotor;
+import lejos.hardware.port.MotorPort;
+import lejos.utility.Delay;
+
 public class RunMotors {
-    // Vars
+	 // Vars
     private final EV3LargeRegulatedMotor leftMotor, rightMotor;
     private int leftMotorSpeed, rightMotorSpeed;
 
@@ -20,15 +19,11 @@ public class RunMotors {
         this.rightMotor = new EV3LargeRegulatedMotor(MotorPort.D);
 
         //To Stop the motor in case of pkill java for example
-        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            System.out.println("Emergency Stop");
-            this.leftMotor.stop();
-            this.rightMotor.stop();
-        }));
-
-        System.out.println("Defining the Stop mode");
-        this.leftMotor.brake();
-        this.rightMotor.brake();
+//        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+//            System.out.println("Emergency Stop");
+//            this.leftMotor.stop();
+//            this.rightMotor.stop();
+//        }));
 
         System.out.println("Defining motor speed");
         leftMotorSpeed = 240;
@@ -58,9 +53,6 @@ public class RunMotors {
         System.out.println("Stop motors");
         this.leftMotor.stop();
         this.rightMotor.stop();
-
-        System.out.println("Checking Battery");
-        System.out.println("Voltage: " + Battery.getInstance().getVoltage());
 
         System.exit(0);
     }
