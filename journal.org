@@ -54,5 +54,6 @@
 *** Réinstallation de l'OS (leJOS EV3 au lieu de ev3dev) (exception liée à l'initialisation des moteurs réglée).
 *** Petite modification dans le montage du robot (la roue arrière tourne maintenant dans le bon sens dans les virages au lieu de glisser).
 ** À faire :
+*** Adapter tout le code du projet pour qu'il fonctionne sous LeJos (au lieu de ev3dev), et le migrer de l'IDE IntelliJ IDEA à Eclipse (qui utilise un plugin LeJos contrairement aux autres IDEs).
 *** Améliorer l'algorithme du suiveur de lignes courbes (vitesse + précision) et finir l'algorithme PID déjà commencé.
 *** Faire des tests sur diverses lignes courbes.
