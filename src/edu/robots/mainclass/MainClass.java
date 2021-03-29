@@ -17,22 +17,22 @@ public class MainClass {
 		// Hello World test
 //		HelloWorld hello = new HelloWorld();
 //		hello.sayHello();
-		
+
 		// Motors test
 //		RunMotors runMotors = new RunMotors();
 //        runMotors.startTurning();
-		
+
 		// Sensors test
 //		LearningColors learningColors = new LearningColors();
 //		learningColors.startLearning(2, 3);
-		
+
 		// Simple 'S' shape line follower
 //      LineFollower lineFollower = new LineFollower();
 //      lineFollower.followTheLine();
-		
+
 		// 'S' shape line follower (Using PID algorithm)
-      PIDLineFollower PIDlineFollower = new PIDLineFollower();
-      PIDlineFollower.followTheLine();
+		PIDLineFollower PIDlineFollower = new PIDLineFollower();
+		PIDlineFollower.followTheLine();
 	}
 
 }

@@ -129,8 +129,16 @@ public class LineFollower {
         // We'll guess that we want the power to go from for e.g: ' motor.getMaxSpeed()/2 ' to 0 when the error goes from
         // 0 to ' - max_distance '. That means the Kp (the slope remember, the change in y divided by the change in x) is;
 
-        //Kp = (0 - motor.getMaxSpeed()/2)/(- max_distance - 0)
-        // in our case : proportionality_constant = (-target_power)/(-max_distance);
+        //Kp = (0 - motor.getMaxSpeed()/2)/(0 - (-max_distance))
+        // in our case : proportionality_constant = (-target_power)/(max_distance);
+        /* And since we only use this constant to calculate Turn (and turn is only used in : 
+		// the power level for the left motor
+			leftMotorSpeed = target_power + (int) turn;
+
+			// the power level for the right motor
+			rightMotorSpeed = target_power - (int) turn;)
+			
+		 so we can multiply kp by -1 and it won't change anything in our program. */
         target_power = (int)getAverageMaxMotorSpeed(leftMotor ,rightMotor)/11;
         proportionality_constant = 185*target_power/(100*max_distance);
         System.out.println("proportionality_constant" + proportionality_constant);

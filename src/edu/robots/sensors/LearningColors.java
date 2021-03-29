@@ -71,8 +71,8 @@ public class LearningColors {
 						LCD.drawString("Measure_" + measure_counter, 2, 2);
 
 						// While no one has pressed the OK button yet
-							LCD.drawString("'OK' to capture : ", 0, 4);
-							Button.ENTER.waitForPress();
+						LCD.drawString("'OK' to capture : ", 0, 4);
+						Button.ENTER.waitForPress();
 
 						// fetching sample...
 						sample = Color.fetchDenormalizedSample(sampleProvider);
@@ -93,7 +93,7 @@ public class LearningColors {
 						// 'sample' array).
 						if (!acceptable_measures.isEmpty())
 							acceptable_measures.clear();
-						
+
 						// Store the measure (as acceptable)
 						acceptable_measures.add(0, new Color("measure_0"));
 						acceptable_measures.get(0).setRgbValues(sample);
@@ -147,7 +147,8 @@ public class LearningColors {
 		}
 	}
 
-	// It happens very rarely (at least for our current sensor) that a value exceeds 255,
+	// It happens very rarely (at least for our current sensor) that a value exceeds
+	// 255,
 	// so it's better to check that.
 	static boolean isInvalidRGBTriplet(float[] a_sample) {
 		return a_sample[0] > 255 || a_sample[1] > 255 || a_sample[2] > 255;
