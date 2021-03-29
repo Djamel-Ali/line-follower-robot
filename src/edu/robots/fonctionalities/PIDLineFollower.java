@@ -45,8 +45,8 @@ public class PIDLineFollower {
 	};
 
 	public void followTheLine() {
-		double turn, error, proportionality_constant;
-		int target_power;
+		double turn, error, proportionality_constant_P, proportionality_constant_I;
+		int target_power, integral = 0;
 		String the_closest_color;
 
 		// Start of the learning phase
@@ -68,19 +68,25 @@ public class PIDLineFollower {
 		double max_distance = Math.max(Color.getDistance(lineColor.getRgbValues(), medianColor.getRgbValues()),
 				Color.getDistance(backgroundColor.getRgbValues(), medianColor.getRgbValues()));
 
-		target_power = (int) (0.145f * getAverageMaxMotorSpeed(leftMotor, rightMotor));
-		proportionality_constant = 0.804f * target_power / max_distance;
+		// Avant integral (les bonnes valeurs pour l'algo P)
+		// target_power = (int) (0.145f * getAverageMaxMotorSpeed(leftMotor,
+		// rightMotor));
+		// proportionality_constant_P = 0.106f * getAverageMaxMotorSpeed(leftMotor,
+		// rightMotor)/max_distance;
+
+		// Avant la dérivée (les bonnes valeurs pour l'algo PI)
+		target_power = (int) (0.23f * getAverageMaxMotorSpeed(leftMotor, rightMotor));
+		proportionality_constant_P = 0.07f * getAverageMaxMotorSpeed(leftMotor, rightMotor) / max_distance;
+		proportionality_constant_I = 0.007f * getAverageMaxMotorSpeed(leftMotor, rightMotor) / max_distance;
 
 		LCD.clear();
 		LCD.drawString("'OK' to start ?", 1, 4);
 		Button.ENTER.waitForPressAndRelease();
-		// System.out.println("\n Start following the line : ");
 
-		// While the brick is detecting
+		// While the 'Esc' button is not pressed, the robot continues to follow the line
 		while (Button.ESCAPE.isUp()) {
 			// Detect a color and get the RGB values
 			sample = Color.fetchDenormalizedSample(learningColors.getSampleProvider());
-//			System.out.println("\t SAMPLE : R = " + sample[0] + "; G = " + sample[1] + "; B = " + sample[2]);
 
 			// what is the current color reading ?
 			// Calculate the distances (in order to find out which color this sample is
@@ -88,8 +94,6 @@ public class PIDLineFollower {
 			the_closest_color = Color.getTheClosestColor(sample, backgroundColor, lineColor, medianColor,
 					MAXIMUM_TOLERATED_DISTANCE);
 			double sample_median_distance = Color.getDistance(sample, medianColor.getRgbValues());
-//			System.out.println("\t Sample-Median Distance == " + sample_median_distance);
-//			System.out.println("\t the_closest_color found : " + the_closest_color);
 
 			if (the_closest_color.equalsIgnoreCase(lineColor.getName()))
 				I_AM_IN_LINE = 1;
@@ -102,7 +106,14 @@ public class PIDLineFollower {
 			// calculate the error
 			error = sample_median_distance * I_AM_IN_LINE;
 
-			turn = proportionality_constant * error;
+			if (error == 0)
+				integral = 0;
+			else
+				// update 'integral' variable
+				integral = (int) (0.9f * integral + error);
+
+			// update 'turn' variable
+			turn = proportionality_constant_P * error + proportionality_constant_I * integral;
 
 			// the power level for the left motor
 			leftMotorSpeed = target_power + (int) turn;
@@ -148,6 +159,8 @@ public class PIDLineFollower {
 					// set speed (with the new power level)
 					leftMotor.setSpeed(leftMotorSpeed);
 					rightMotor.setSpeed(rightMotorSpeed);
+
+					// Make the motors move backward
 					leftMotor.backward();
 					rightMotor.backward();
 				}
