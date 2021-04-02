@@ -1,5 +1,8 @@
 package edu.robots.fonctionalities;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import edu.robots.model.Color;
@@ -45,7 +48,7 @@ public class PIDLineFollower {
 	};
 
 	public void followTheLine() {
-		double turn, error, proportionality_constant_P, proportionality_constant_I;
+		double turn, error, last_error = 0,  proportionality_constant_P, proportionality_constant_I, proportionality_constant_D, derivative = 0;
 		int target_power, integral = 0;
 		String the_closest_color;
 
@@ -68,17 +71,50 @@ public class PIDLineFollower {
 		double max_distance = Math.max(Color.getDistance(lineColor.getRgbValues(), medianColor.getRgbValues()),
 				Color.getDistance(backgroundColor.getRgbValues(), medianColor.getRgbValues()));
 
-		// Avant integral (les bonnes valeurs pour l'algo P)
-		// target_power = (int) (0.145f * getAverageMaxMotorSpeed(leftMotor,
-		// rightMotor));
-		// proportionality_constant_P = 0.106f * getAverageMaxMotorSpeed(leftMotor,
-		// rightMotor)/max_distance;
+		double avg_slope = getAverageMaxMotorSpeed(leftMotor, rightMotor) / max_distance;
+		
+		// P (à moi) : Avant integral (les bonnes valeurs pour l'algo P)
+//		 target_power = (int) (0.145f * getAverageMaxMotorSpeed(leftMotor,
+//		 rightMotor));
+//		 proportionality_constant_P = 0.106f * avg_slope;
 
-		// Avant la dérivée (les bonnes valeurs pour l'algo PI)
-		target_power = (int) (0.23f * getAverageMaxMotorSpeed(leftMotor, rightMotor));
-		proportionality_constant_P = 0.07f * getAverageMaxMotorSpeed(leftMotor, rightMotor) / max_distance;
-		proportionality_constant_I = 0.007f * getAverageMaxMotorSpeed(leftMotor, rightMotor) / max_distance;
-
+		//** P (plus précis)
+//		target_power = (int) (0.174f * getAverageMaxMotorSpeed(leftMotor, rightMotor));
+//		proportionality_constant_P = 0.154374961f * avg_slope; 
+//		proportionality_constant_I = 0.007f * avg_slope;
+//		proportionality_constant_D = 0.7f * avg_slope;
+		
+		
+		//** PI: Avant la dérivée (les bonnes valeurs pour l'algo PI) (with 0.9f integral)
+//		target_power = (int) (0.239f * getAverageMaxMotorSpeed(leftMotor, rightMotor));
+//		proportionality_constant_P = 0.07f * avg_slope;
+//		proportionality_constant_I = 0.007f * avg_slope;
+		
+		// PID program (à moi)
+		// moyenne du dt = 0,773679996
+//		target_power = (int) (0.17f/*4*/ * getAverageMaxMotorSpeed(leftMotor, rightMotor));// tp= 0.3f*... est bonne au lieu de 0.17f
+//		proportionality_constant_P = 0.1543749f * avg_slope; // (kp = kc = 0.16f * avg_slope; Tp=0.17f*max_speed)~~~~(kp= kc = 0.154374961*slope; Tp=0.17f*max_speed)
+//		proportionality_constant_I = 0/*.007f * avg_slope*/;
+//		proportionality_constant_D = 0/*.5 * avg_slope*/;
+		
+		
+		// PID program (article)
+//		target_power = (int) (0.174f * getAverageMaxMotorSpeed(leftMotor, rightMotor));// tp= 0.3f*... est bonne au lieu de 0.17f
+//		proportionality_constant_P = 0.154374961f * avg_slope; // (kp = kc = 0.16f * avg_slope; Tp=0.17f*max_speed)~~~~(kp= kc = 0.154374961*slope; Tp=0.17f*max_speed)
+//		proportionality_constant_I = 0.007f * avg_slope/**/;
+//		proportionality_constant_D = 0.7f * avg_slope/**/;
+		
+		
+		// selon l'article:
+		double kc = 0.1543749 * avg_slope;
+		double pc = 0.5;
+		double dt = 0.773679996;
+		
+		target_power = (int) (0.17f * getAverageMaxMotorSpeed(leftMotor, rightMotor));// tp= 0.3f*... est bonne au lieu de 0.17f
+		proportionality_constant_P = 0.09f * kc; // (kp = kc = 0.16f * avg_slope; Tp=0.17f*max_speed)~~~~(kp= kc = 0.154374961*slope; Tp=0.17f*max_speed)
+		proportionality_constant_I = 0.8f*proportionality_constant_P * dt/pc;
+		proportionality_constant_D = 5f*proportionality_constant_P * pc /dt;
+		
 		LCD.clear();
 		LCD.drawString("'OK' to start ?", 1, 4);
 		Button.ENTER.waitForPressAndRelease();
@@ -111,9 +147,12 @@ public class PIDLineFollower {
 			else
 				// update 'integral' variable
 				integral = (int) (0.9f * integral + error);
+			
+			// calculate the derivative
+			derivative = error - last_error;
 
 			// update 'turn' variable
-			turn = proportionality_constant_P * error + proportionality_constant_I * integral;
+			turn = proportionality_constant_P * error + proportionality_constant_I * integral + proportionality_constant_D * derivative;
 
 			// the power level for the left motor
 			leftMotorSpeed = target_power + (int) turn;
@@ -139,7 +178,7 @@ public class PIDLineFollower {
 					leftMotor.setSpeed(leftMotorSpeed);
 					rightMotor.setSpeed(rightMotorSpeed);
 
-					// Make the motors move forward
+					// Make the motors move forwardn point de départ. Fixez le terme Kp à un
 					leftMotor.backward();
 					rightMotor.forward();
 				} else if (rightMotorSpeed < 0 && leftMotorSpeed > 0) {
@@ -165,11 +204,14 @@ public class PIDLineFollower {
 					rightMotor.backward();
 				}
 			}
+			
+			// update last error
+			last_error = error;
 		}
+		
 		// stop motors (Esc has been clicked)
 		leftMotor.stop();
 		rightMotor.stop();
-
 	}
 
 	static Color getMedianColor(Color _lineColor, Color _backgroundColor, Color _capturedMedianColor) {

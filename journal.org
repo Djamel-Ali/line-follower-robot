@@ -57,3 +57,14 @@
 *** Adapter tout le code du projet pour qu'il fonctionne sous LeJos (au lieu de ev3dev), et le migrer de l'IDE IntelliJ IDEA à Eclipse (qui utilise un plugin LeJos contrairement aux autres IDEs).
 *** Améliorer l'algorithme du suiveur de lignes courbes (vitesse + précision) et finir l'algorithme PID déjà commencé.
 *** Faire des tests sur diverses lignes courbes.
+* 31/03/2021
+** Fait :
+*** Adaptation du code du programme pour qu'il fonctionne sous LeJos (au lieu de ev3dev).
+*** (Migration du programme et de tout le projet de l'IDE IntelliJ IDEA à Eclipse.)
+*** Programme PID terminé.
+*** Modification dans la manière de monter le capteur sur du robot (il est à une meilleure distance du sol maintenant, donc une meilleure précision lorsqu'il suit la ligne).
+*** Plusieurs tests sur des lignes courbes ont été faits afin de trouver une bonne première estimation de la série de paramètres kp, ki et kd.
+** À faire :
+*** Continuer à faire plusieurs tests sur diverses types de lignes, des virages un peu plus serrés, des intersections aux couleurs différentes.
+*** Ajouter l'option "trouver la ligne" dans le cas ou le robot se perd à un moment donné dans le fond.
+*** (S'il reste du temps, fair une sorte de "mémorisation" au premier tour afin de suivre la ligne intelligemment au 2nd tour et plus).
