@@ -64,7 +64,8 @@ public class Color {
 		// find the min :
 		double tempMin = Math.min(distance_Sample_line, distance_Sample_background);
 		double min = Math.min(tempMin, distance_Sample_median);
-
+		 
+		 
 		// identify the closest color :
 		if (min <= _MAXIMUM_TOLERATED_DISTANCE) {
 			if (min == distance_Sample_line) {

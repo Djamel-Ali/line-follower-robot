@@ -24,7 +24,7 @@ public class LearningColors {
 
 	private static Color average_color;
 
-	// The maximum distance allowed between 2 colors.
+	// The maximum distance allowed between 2 mesures of a same color.
 	private static final double MAX_ALLOWED_DISTANCE = 70;
 
 	// For Robot Configuration
