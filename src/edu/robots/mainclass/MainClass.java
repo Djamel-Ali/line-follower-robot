@@ -5,8 +5,7 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 
 import edu.robots.actuators.RunMotors;
-import edu.robots.fonctionalities.LineFollower;
-import edu.robots.fonctionalities.PIDLineFollower;
+import edu.robots.behaviours.PIDLineFollower;
 import edu.robots.helloworld.HelloWorld;
 import edu.robots.sensors.LearningColors;
 
@@ -26,12 +25,10 @@ public class MainClass {
 //		LearningColors learningColors = new LearningColors();
 //		learningColors.startLearning(2, 3);
 
-		// Simple 'S' shape line follower
-//      LineFollower lineFollower = new LineFollower();
-//      lineFollower.followTheLine();
-
 		// 'S' shape line follower (Using PID algorithm)
 		PIDLineFollower PIDlineFollower = new PIDLineFollower();
+		PIDLineFollower.getLearningColors().startLearning(3, 3);
+		PIDLineFollower.getReady();
 		PIDlineFollower.followTheLine();
 	}
 
