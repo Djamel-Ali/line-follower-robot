@@ -1,9 +1,5 @@
 package edu.robots.model;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -68,32 +64,6 @@ public class Color {
 		// find the min :
 		double tempMin = Math.min(distance_Sample_line, distance_Sample_background);
 		double min = Math.min(tempMin, distance_Sample_median);
-
-//		try {
-//		      File myObj = new File("log.txt");
-//		      if (myObj.createNewFile()) {
-//		        System.out.println("File created: " + myObj.getName());
-//		      } else {
-//		        System.out.println("File already exists.");
-//		      }
-//		    } catch (IOException e) {
-//		      System.out.println("An error occurred.");
-//		      e.printStackTrace();
-//		    }
-		
-		 try {
-		      FileWriter myWriter = new FileWriter("log.txt", true);
-		      BufferedWriter bw = new BufferedWriter(myWriter);
-		      bw.write("\n============================================\n");
-		      bw.write("sample-median = " + distance_Sample_median + "\n");
-		      bw.write("sample-line   = " + distance_Sample_line + "\n");
-		      bw.write("sample-back   = " + distance_Sample_background + "\n");
-		      bw.newLine();
-		      bw.close();
-		    } catch (IOException e) {
-		      System.out.println("An error occurred.");
-		      e.printStackTrace();
-		    }
 		 
 		 
 		// identify the closest color :
