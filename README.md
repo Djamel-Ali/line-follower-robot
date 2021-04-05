@@ -11,7 +11,7 @@ ___
 
 ## STEP V : PID Line follower
 
-## STEP VI : Adding 'Find the Line' feature
+## STEP VI : Adding 'Find the Line' feature (in 'look_for_line' branch, but not yet finished)
 
 ## Prerequisites
 
