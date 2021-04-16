@@ -76,3 +76,10 @@
 *** Enregistrer une vidéo (et des photos s'il le faut) pour montrer tout ce que peut faire le robot (ses caractéristiques et comportements...).
 *** Perfectionner le mouvement en spiral afin de trouver/retrouver la ligne.
 *** Essayer d'améliorer la vitesse (particulièrement sur les lignes droites).
+* 14/04/2021
+** Fait :
+*** Enregistrement de vidéos (liens : PID Algorithm => https://www.youtube.com/watch?v=FhZJFoExKqs , PI Algorithm => https://www.youtube.com/watch?v=XVTuLtFHmvY).
+*** Vitesse améliorée (mais toujours en train d'essayer d'en faire mieux).
+** À Faire :
+*** Rédiger le rapport de ce projet.
+*** (S'il reste encore du temps, finir le mouvement en spiral et fusionner la branche dans 'master').
