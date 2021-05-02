@@ -81,5 +81,5 @@
 *** Enregistrement de vidéos (liens : PID Algorithm => https://www.youtube.com/watch?v=FhZJFoExKqs , PI Algorithm => https://www.youtube.com/watch?v=XVTuLtFHmvY).
 *** Vitesse améliorée (mais toujours en train d'essayer d'en faire mieux).
 ** À Faire :
+*** Mémoriser la couleur de ligne de départ/arrivé pour s'arrêter une fois le tour est fait.
 *** Rédiger le rapport de ce projet.
-*** (S'il reste encore du temps, finir le mouvement en spiral et fusionner la branche dans 'master').
