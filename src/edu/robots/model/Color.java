@@ -54,16 +54,18 @@ public class Color {
 	// or the background "BACKGROUND" or OTHER if the captured color is very far
 	// from the two previous ones)
 	public static String getTheClosestColor(float[] _sample, Color _lineColor, Color _backgroundColor,
-			Color _medianColor, double _MAXIMUM_TOLERATED_DISTANCE) throws NullPointerException {
+			Color _medianColor, Color _stopColor, double _MAXIMUM_TOLERATED_DISTANCE) throws NullPointerException {
 
 		// calculate the distance from the sample to {line, background, median}
 		double distance_Sample_line = Color.getDistance(_sample, _lineColor.getRgbValues());
 		double distance_Sample_background = Color.getDistance(_sample, _backgroundColor.getRgbValues());
 		double distance_Sample_median = Color.getDistance(_sample, _medianColor.getRgbValues());
+		double distance_Sample_stop = Color.getDistance(_sample, _stopColor.getRgbValues());
 
 		// find the min :
-		double tempMin = Math.min(distance_Sample_line, distance_Sample_background);
-		double min = Math.min(tempMin, distance_Sample_median);
+		double tempMin1 = Math.min(distance_Sample_line, distance_Sample_background);
+		double tempMin2 = Math.min(tempMin1, distance_Sample_median);
+		double min = Math.min(tempMin2, distance_Sample_stop);
 		 
 		 
 		// identify the closest color :
@@ -76,6 +78,7 @@ public class Color {
 				return "FRONTIER";
 			}
 		} else {
+			if (distance_Sample_stop < _MAXIMUM_TOLERATED_DISTANCE) return "STOP";
 			return "OTHER";
 		}
 	}
@@ -126,16 +129,15 @@ public class Color {
 	}
 
 	public static float[] fetchDenormalizedSample(SampleProvider _sampleProvider) {
-
 		// local variables :
-		float[] my_sample = new float[_sampleProvider.sampleSize()];
+				float[] my_sample = new float[_sampleProvider.sampleSize()];
 
-		_sampleProvider.fetchSample(my_sample, 0);
-		my_sample[0] = my_sample[0] * 255;
-		my_sample[1] = my_sample[1] * 255;
-		my_sample[2] = my_sample[2] * 255;
+				_sampleProvider.fetchSample(my_sample, 0);
+				my_sample[0] = my_sample[0] * 255;
+				my_sample[1] = my_sample[1] * 255;
+				my_sample[2] = my_sample[2] * 255;
 
-		return my_sample;
+				return my_sample;
 	}
 
 }

@@ -40,8 +40,7 @@ public class LearningColors {
 		// Initial distance (intermediate var)
 		distance = 0;
 
-		// The average color of all measurements made on a given color (intermediate
-		// var)
+		/* The average color of all measurements made on a given color (intermediate var)*/
 		average_color = new Color("avg_color", new float[] { 0, 0, 0 });
 
 		ev3ColorSensor = new EV3ColorSensor(SensorPort.S1);
