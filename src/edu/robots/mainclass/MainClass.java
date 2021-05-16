@@ -11,10 +11,11 @@ import edu.robots.sensors.LearningColors;
 
 public class MainClass {
 
+	public static final int NB_OF_COLORS_TO_LEARN = 4;
+	static final int NB_OF_MEASURES_PER_COLOR = 4;
+	
 	public static void main(String[] args) throws RemoteException, MalformedURLException, NotBoundException {
 		
-		final int NB_OF_COLORS_TO_LEARN = 4;
-		final int NB_OF_MEASURES_PER_COLOR = 4;
 
 		// Hello World test
 //		HelloWorld hello = new HelloWorld();

@@ -2,6 +2,7 @@ package edu.robots.behaviours;
 
 import java.util.ArrayList;
 
+import edu.robots.mainclass.MainClass;
 import edu.robots.model.Color;
 import edu.robots.sensors.LearningColors;
 import lejos.hardware.Button;
@@ -15,7 +16,7 @@ public class PIDLineFollower {
 
 	// Attributes
 	
-	private final static int NB_OF_COLORS_TO_LEARN = 4;
+	private final static int NB_OF_COLORS_TO_LEARN = MainClass.NB_OF_COLORS_TO_LEARN;
 	
 	/* (it's equal to 1 when he's on the line, -1 on the background, 0 on the frontier (50% line, 50% background)).*/
 	private static int I_AM_IN_LINE = 0;
