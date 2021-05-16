@@ -146,8 +146,6 @@ public class PIDLineFollower {
 */
 //----------------------------------------------------------------------------------
 
-		target_power = (int) (0.3f * getAverageMaxMotorSpeed(leftMotor, rightMotor));
-
 		LCD.clear();
 		LCD.drawString("'OK' to start ?", 1, 4);
 		Button.ENTER.waitForPressAndRelease();
