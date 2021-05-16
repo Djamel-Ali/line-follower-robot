@@ -68,3 +68,22 @@
 *** Continuer à faire plusieurs tests sur diverses types de lignes, des virages un peu plus serrés, des intersections aux couleurs différentes.
 *** Ajouter l'option "trouver la ligne" dans le cas ou le robot se perd à un moment donné dans le fond.
 *** (S'il reste du temps, fair une sorte de "mémorisation" au premier tour afin de suivre la ligne intelligemment au 2nd tour et plus).
+* 07/04/2021
+** Fait :
+*** Plusieurs tests sur diverses types de lignes, des virages un peu plus serrés, des intersections aux couleurs différentes (si la couleur de l'intersection est assez proche de la couleur de la ligne il risque de la suivre)
+*** Ajout de l'option "trouver la ligne" en tournant en spiral (pas entièrement finie, elle est encore en cours de développement dans la branche 'look_for_line', il reste à ajuster les valeurs pour faire des formes spirales parfaites).
+** À Faire :
+*** Enregistrer une vidéo (et des photos s'il le faut) pour montrer tout ce que peut faire le robot (ses caractéristiques et comportements...).
+*** Perfectionner le mouvement en spiral afin de trouver/retrouver la ligne.
+*** Essayer d'améliorer la vitesse (particulièrement sur les lignes droites).
+* 14/04/2021
+** Fait :
+*** Enregistrement de vidéos (liens : PID Algorithm => https://www.youtube.com/watch?v=FhZJFoExKqs , PI Algorithm => https://www.youtube.com/watch?v=XVTuLtFHmvY).
+*** Vitesse améliorée (mais toujours en train d'essayer d'en faire mieux).
+** À Faire :
+*** Mémoriser la couleur de ligne de départ/arrivé pour s'arrêter une fois le tour est fait.
+*** Rédiger le rapport de ce projet.
+* 14/04/2021
+** Fait :
+*** Mémoriser la couleur de ligne de départ/arrivé pour s'arrêter une fois le tour est fait.
+*** Rédiger le rapport final de ce projet.
