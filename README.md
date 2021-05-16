@@ -1,17 +1,17 @@
 # A Line Follower Robot (using leJOS EV3) :
 ___
-  #### The main steps followed for the realization of this project :
-## STEP I : Hello World and other basic programs
+  ##### The main steps followed for the realization of this project :
+ #### STEP I :   Hello World and other basic programs
 
-## STEP II : Run Motors
+ #### STEP II :  Run Motors
 
-## STEP III : Straight line follower
+ #### STEP III : Straight line follower
 
-## STEP IV : Curved Line follower
+ #### STEP IV :  Curved Line follower
 
-## STEP V : PID Line follower
+ #### STEP V :   PID Line follower
 
-## STEP VI : Adding 'Find the Line' feature (in 'look_for_line' branch, but not yet finished)
+ #### STEP VI :  Adding 'Find the Line' feature (in 'look_for_line' branch, but not yet finished)
 
 ## Prerequisites
 
@@ -25,16 +25,18 @@ Using the EV3 brick menu, go to:
 
 > **programs -> MainClass.java -> execute program.**
 
-### - Phase 1 : Learning the colors 
+### - Phase 1 : Learning the colors
 
-(by default 3 measures per color to learn, but you can change this in the program PIDLineFollower.java by modifying the static variables concerned).
+(by default 4 measures per color to learn, but you can change this in the program ***MainClass.java*** by modifying the static variables concerned(***NB_OF_COLORS_TO_LEARN***)).
 
-As this program is a "border" follower between the line, and the background, the robot needs to learn 3 colors :
+As this program is a "frontier"(more precisely "right frontier") follower between the line, and the background, the robot needs to learn in total 4 colors :
+
 * The color of the line.
 * The color of the background.
 * The color of the border (50% on the line and 50% on the background).
+* The color of Start/Arrival line.
 
-We can also start by making it learn the background color and then the line color, but the border color must always be the last to be learned.
+We can also start by making it learn the background color and then the line color, but learning the colors of the "frontier" and the "Start/Finish" line should always be done last and in that order.
 
 ### - Phase 2 : Start following the line.
 
@@ -45,7 +47,7 @@ We can also start by making it learn the background color and then the line colo
 
 * Click on the '**CANCEL**' button in the top left corner to stop the robot.
 
-#### _NOTE :_ 
+#### _NOTE :_
  _If no one clicks on the 'CANCEL' button the robot continues to follow the line, and if at some point it gets lost in the background, it spirals until it finds the line; and so it never stops by itself (unless it runs out of battery of course ;) )._
 
 ___

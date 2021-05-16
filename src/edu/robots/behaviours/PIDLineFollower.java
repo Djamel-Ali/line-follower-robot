@@ -2,6 +2,7 @@ package edu.robots.behaviours;
 
 import java.util.ArrayList;
 
+import edu.robots.mainclass.MainClass;
 import edu.robots.model.Color;
 import edu.robots.sensors.LearningColors;
 import lejos.hardware.Button;
@@ -14,14 +15,18 @@ import lejos.hardware.port.MotorPort;
 public class PIDLineFollower {
 
 	// Attributes
-	private final static int NB_OF_COLORS_TO_LEARN = 3;
-	private static int I_AM_IN_LINE = 1; // (it's equal to 1 when he's on the line, -1 on the background, 0 on the
-											// frontier)
-	private static final double MAXIMUM_TOLERATED_DISTANCE = 85;
+	
+	private final static int NB_OF_COLORS_TO_LEARN = MainClass.NB_OF_COLORS_TO_LEARN;
+	
+	/* (it's equal to 1 when he's on the line, -1 on the background, 0 on the frontier (50% line, 50% background)).*/
+	private static int I_AM_IN_LINE = 0;
+	private static final double MAXIMUM_TOLERATED_DISTANCE = 85; /*between two colors*/
 	private static float[] sample;
 	private static final LearningColors learningColors = new LearningColors();
 	private static ArrayList<Color> listOfLearnedColors;
-	private static Color lineColor, backgroundColor, medianColor, calculatedMedianColor, capturedMedianColor;
+	
+	/* The value of 'medianColor' will be calculated as the average of the values of 'calculatedMedianColor' and 'capturedMedianColor */
+	private static Color lineColor, backgroundColor, medianColor, calculatedMedianColor, capturedMedianColor, stopColor;
 
 	// Motors;
 	private static EV3LargeRegulatedMotor rightMotor;
@@ -31,7 +36,7 @@ public class PIDLineFollower {
 
 	/* PID main variables */
 	static double turn = 0, error, last_error = 0, proportionality_constant_P, proportionality_constant_I,
-			proportionality_constant_D, derivative = 0;
+				  proportionality_constant_D, derivative = 0;
 	static int target_power, integral = 0;
 	static String the_closest_color;
 
@@ -53,60 +58,93 @@ public class PIDLineFollower {
 		listOfLearnedColors = LearningColors.getListOfLearnedColors();
 
 		// Color identification
+		
+		//line
 		lineColor = listOfLearnedColors.get(0);
 		lineColor.setName("LINE");
+		
+		// background
 		backgroundColor = listOfLearnedColors.get(1);
 		backgroundColor.setName("BACKGROUND");
+		
+		// median
 		capturedMedianColor = listOfLearnedColors.get(2);
 		medianColor = getMedianColor(lineColor, backgroundColor, capturedMedianColor);
-
+		
+		// stop
+		stopColor = listOfLearnedColors.get(3);
+		stopColor.setName("STOP");
+		
 		// Calcule de la distance max qui peut être enregistrée:
 		double max_distance = Math.max(Color.getDistance(lineColor.getRgbValues(), medianColor.getRgbValues()),
 				Color.getDistance(backgroundColor.getRgbValues(), medianColor.getRgbValues()));
 
 		double avg_slope = getAverageMaxMotorSpeed(leftMotor, rightMotor) / max_distance;
 
-		// ** P (plus précis)
-//				target_power = (int) (0.174f * getAverageMaxMotorSpeed(leftMotor, rightMotor));
-//				proportionality_constant_P = 0.154374961f * avg_slope; 
-//				proportionality_constant_I = 0.007f * avg_slope;
-//				proportionality_constant_D = 0.7f * avg_slope;
+//----------------------------------------------------------------------------------
+/*
 
-		// ** PI: Avant la dérivée (les bonnes valeurs pour l'algo PI) (with 0.9f
-		// integral)
-//				target_power = (int) (0.239f * getAverageMaxMotorSpeed(leftMotor, rightMotor));
-//				proportionality_constant_P = 0.07f * avg_slope;
-//				proportionality_constant_I = 0.007f * avg_slope;
+// ** P : 
+// *  Avec P : robot réagissant Proportionnellement à la valeur de l'erreur.
+// *  Sans 'Integral' le robot n'a pas de mémoire, et sans 'dérivé' il n'anticipe pas l'avenir,
+// *  il ne prend en compte que la valeur de l'erreur qui vient de se produire.
+ 
+				target_power = (int) (0.174f * getAverageMaxMotorSpeed(leftMotor, rightMotor));
+				proportionality_constant_P = 0.154374961f * avg_slope; 
+				proportionality_constant_I = 0.007f * avg_slope;
+				proportionality_constant_D = 0.7f * avg_slope;
 
-		// PID program (à moi)
-		// moyenne du dt = 0,773679996
-//				target_power = (int) (0.17f/*4*/ * getAverageMaxMotorSpeed(leftMotor, rightMotor));// tp= 0.3f*... est bonne au lieu de 0.17f
-//				proportionality_constant_P = 0.1543749f * avg_slope; // (kp = kc = 0.16f * avg_slope; Tp=0.17f*max_speed)~~~~(kp= kc = 0.154374961*slope; Tp=0.17f*max_speed)
-//				proportionality_constant_I = 0/*.007f * avg_slope*/;
-//				proportionality_constant_D = 0/*.5 * avg_slope*/;
+*/	
+//----------------------------------------------------------------------------------
 
-		// PID program (article)
-//				target_power = (int) (0.174f * getAverageMaxMotorSpeed(leftMotor, rightMotor));// tp= 0.3f*... est bonne au lieu de 0.17f
-//				proportionality_constant_P = 0.154374961f * avg_slope; // (kp = kc = 0.16f * avg_slope; Tp=0.17f*max_speed)~~~~(kp= kc = 0.154374961*slope; Tp=0.17f*max_speed)
-//				proportionality_constant_I = 0.007f * avg_slope/**/;
-//				proportionality_constant_D = 0.7f * avg_slope/**/;
+//----------------------------------------------------------------------------------
+		
+// ** PI: 
+// *  Avec P : robot réagissant Proportionnellement à la valeur de l'erreur.
+// *  Sans 'La dérivée' le robot n'anticipe pas l'avenir 
+// * (les bonnes valeurs pour l'algo PI définies à partir de plusieurs essais) (avec integral = 0.9f)
 
-		// selon l'article:
+				target_power = (int) (0.239f * getAverageMaxMotorSpeed(leftMotor, rightMotor));
+				proportionality_constant_P = 0.07f * avg_slope;
+				proportionality_constant_I = 0.007f * avg_slope;
+
+//----------------------------------------------------------------------------------
+
+//----------------------------------------------------------------------------------
+/*
+
+// * PID program : robot (réagissant Proportionnellement à la valeur de l'erreur) avec mémoire (Integral) et capacité d'anticiper l'avenir (Dérivé)
+// * (paramètres définis à partir de plusieurs essais)
+// * Moyenne du dt = 0,773679996
+		 
+				target_power = (int) (0.17f * getAverageMaxMotorSpeed(leftMotor, rightMotor));// tp= 0.3f*... est bonne aussi au lieu de 0.17f
+				proportionality_constant_P = 0.1543749f * avg_slope; // (kp = kc = 0.16f * avg_slope; Tp=0.17f*max_speed)~~~~(kp= kc = 0.154374961*slope; Tp=0.17f*max_speed)
+				proportionality_constant_I = 0.007f * avg_slope;
+				proportionality_constant_D = 0.5 * avg_slope;
+
+*/
+//----------------------------------------------------------------------------------
+
+//----------------------------------------------------------------------------------
+/*
+ 				
+// PID program : (comme le précidant, mais le processus pour définir ces valeurs est différent).
+// * (paramètres définis en suivant les étapes suggérée dans cet article : http://www.inpharmix.com/jps/PID_Controller_For_Lego_Mindstorms_Robots.html)
+				target_power = (int) (0.174f * getAverageMaxMotorSpeed(leftMotor, rightMotor));// tp= 0.3f*... est bonne au lieu de 0.17f
+				proportionality_constant_P = 0.154374961f * avg_slope; // (kp = kc = 0.16f * avg_slope; Tp=0.17f*max_speed)~~~~(kp= kc = 0.154374961*slope; Tp=0.17f*max_speed)
+				proportionality_constant_I = 0.007f * avg_slope;
+				proportionality_constant_D = 0.7f * avg_slope;
+
+// constantes définis en suivant les étapes suggérées dans l'article de référence.
 		double kc = 0.1543749 * avg_slope;
 		double pc = 0.5;
 		double dt = 0.773679996;
 
-//		target_power = (int) (0.17f * getAverageMaxMotorSpeed(leftMotor, rightMotor));// tp= 0.3f*... est bonne au lieu
-		// de 0.17f
-// proportionality_constant_P = 0.09f * kc; (and hauteur = 6 mm)
+// target_power = (int) (0.17f * getAverageMaxMotorSpeed(leftMotor, rightMotor));// tp= 0.3f*... est bonne au lieu de 0.17f
+// proportionality_constant_P = 0.09f * kc; (et hauteur = 6 mm)
 
-		target_power = (int) (0.3f * getAverageMaxMotorSpeed(leftMotor, rightMotor));
-
-		// here hauteur = 0.8
-		proportionality_constant_P = 0.096f * kc; // (kp = kc = 0.16f * avg_slope; Tp=0.17f*max_speed)~~~~(kp= kc =
-													// 0.154374961*slope; Tp=0.17f*max_speed)
-		proportionality_constant_I = 0.8f * proportionality_constant_P * dt / pc;
-		proportionality_constant_D = 5f * proportionality_constant_P * pc / dt;
+*/
+//----------------------------------------------------------------------------------
 
 		LCD.clear();
 		LCD.drawString("'OK' to start ?", 1, 4);
@@ -125,17 +163,20 @@ public class PIDLineFollower {
 
 			// what is the current color reading ?
 			// Calculate the distances (in order to find out which color this sample is
-			// closest to (line or background or median or other).
+			// closest to (line or background or median or stop or other).
 			the_closest_color = Color.getTheClosestColor(sample, lineColor, backgroundColor, medianColor,
-					MAXIMUM_TOLERATED_DISTANCE);
+					stopColor, MAXIMUM_TOLERATED_DISTANCE);
 
 			if (the_closest_color.equalsIgnoreCase(lineColor.getName()))
-				I_AM_IN_LINE = 1;
+				I_AM_IN_LINE = 1; /* il faut qu'il tourne à droite (car c'est un suiveur de ligne à droite) */
+			
 			else if (the_closest_color.equalsIgnoreCase(backgroundColor.getName()))
-				I_AM_IN_LINE = -1;
+				I_AM_IN_LINE = -1; /* il faut qu'il tourne à gauche (car c'est un suiveur de ligne à droite) */
+			
 			else if (the_closest_color.equalsIgnoreCase(medianColor.getName()))
-				I_AM_IN_LINE = 0;
-			// if OTHER
+				I_AM_IN_LINE = 0; /* il faut qu'il continue tout droit */
+			
+			// if OTHER OR STOP_COLOR
 			else break;
 
 			double sample_median_distance = Color.getDistance(sample, medianColor.getRgbValues());
@@ -173,7 +214,7 @@ public class PIDLineFollower {
 		} while (Button.ESCAPE.isUp());
 		
 		Sound.twoBeeps();
-		// stop motors (Esc has been clicked)
+		// stop motors (Esc has been clicked, or STOP_COLOR or OTHER color has been detected)
 		leftMotor.stop();
 		rightMotor.stop();
 	}
@@ -197,7 +238,7 @@ public class PIDLineFollower {
 				leftMotor.setSpeed(_leftMotorSpeed);
 				rightMotor.setSpeed(_rightMotorSpeed);
 
-				// Make the motors move forwardn point de départ. Fixez le terme Kp à un
+				
 				leftMotor.backward();
 				rightMotor.forward();
 			} else if (_rightMotorSpeed < 0 && _leftMotorSpeed > 0) {
@@ -208,8 +249,8 @@ public class PIDLineFollower {
 				leftMotor.setSpeed(_leftMotorSpeed);
 				rightMotor.setSpeed(_rightMotorSpeed);
 
-				rightMotor.backward();
 				leftMotor.forward();
+				rightMotor.backward();
 			} else {
 				_leftMotorSpeed = -_leftMotorSpeed;
 				_rightMotorSpeed = -_rightMotorSpeed;

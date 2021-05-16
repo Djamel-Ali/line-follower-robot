@@ -11,7 +11,11 @@ import edu.robots.sensors.LearningColors;
 
 public class MainClass {
 
+	public static final int NB_OF_COLORS_TO_LEARN = 4;
+	static final int NB_OF_MEASURES_PER_COLOR = 4;
+	
 	public static void main(String[] args) throws RemoteException, MalformedURLException, NotBoundException {
+		
 
 		// Hello World test
 //		HelloWorld hello = new HelloWorld();
@@ -27,7 +31,7 @@ public class MainClass {
 
 		// 'S' shape line follower (Using PID algorithm)
 		PIDLineFollower PIDlineFollower = new PIDLineFollower();
-		PIDLineFollower.getLearningColors().startLearning(3, 3);
+		PIDLineFollower.getLearningColors().startLearning(NB_OF_COLORS_TO_LEARN, NB_OF_MEASURES_PER_COLOR);
 		PIDLineFollower.getReady();
 		PIDlineFollower.followTheLine();
 	}
