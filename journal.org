@@ -83,3 +83,7 @@
 ** À Faire :
 *** Mémoriser la couleur de ligne de départ/arrivé pour s'arrêter une fois le tour est fait.
 *** Rédiger le rapport de ce projet.
+* 16/05/2021
+** Fait :
+*** Mémoriser la couleur de ligne de départ/arrivé pour s'arrêter une fois le tour est fait.
+*** Rédiger le rapport final de ce projet.
