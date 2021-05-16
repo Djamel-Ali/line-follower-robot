@@ -171,8 +171,10 @@ public class PIDLineFollower {
 
 			if (the_closest_color.equalsIgnoreCase(lineColor.getName()))
 				I_AM_IN_LINE = 1; /* il faut qu'il tourne à droite (car c'est un suiveur de ligne à droite) */
+			
 			else if (the_closest_color.equalsIgnoreCase(backgroundColor.getName()))
 				I_AM_IN_LINE = -1; /* il faut qu'il tourne à gauche (car c'est un suiveur de ligne à droite) */
+			
 			else if (the_closest_color.equalsIgnoreCase(medianColor.getName()))
 				I_AM_IN_LINE = 0; /* il faut qu'il continue tout droit */
 			

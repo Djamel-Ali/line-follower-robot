@@ -1,17 +1,17 @@
 # A Line Follower Robot (using leJOS EV3) :
 ___
-  #### The main steps followed for the realization of this project :
-## STEP I : Hello World and other basic programs
+  ##### The main steps followed for the realization of this project :
+ #### STEP I :   Hello World and other basic programs
 
-## STEP II : Run Motors
+ #### STEP II :  Run Motors
 
-## STEP III : Straight line follower
+ #### STEP III : Straight line follower
 
-## STEP IV : Curved Line follower
+ #### STEP IV :  Curved Line follower
 
-## STEP V : PID Line follower
+ #### STEP V :   PID Line follower
 
-## STEP VI : Adding 'Find the Line' feature (in 'look_for_line' branch, but not yet finished)
+ #### STEP VI :  Adding 'Find the Line' feature (in 'look_for_line' branch, but not yet finished)
 
 ## Prerequisites
 
