@@ -1,5 +1,8 @@
 package edu.robots.model;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -57,30 +60,49 @@ public class Color {
 			Color _medianColor, Color _stopColor, double _MAXIMUM_TOLERATED_DISTANCE) throws NullPointerException {
 
 		// calculate the distance from the sample to {line, background, median}
-		double distance_Sample_line = Color.getDistance(_sample, _lineColor.getRgbValues());
-		double distance_Sample_background = Color.getDistance(_sample, _backgroundColor.getRgbValues());
-		double distance_Sample_median = Color.getDistance(_sample, _medianColor.getRgbValues());
-		double distance_Sample_stop = Color.getDistance(_sample, _stopColor.getRgbValues());
+		double distance_sample_line = Color.getDistance(_sample, _lineColor.getRgbValues());
+		double distance_sample_background = Color.getDistance(_sample, _backgroundColor.getRgbValues());
+		double distance_sample_median = Color.getDistance(_sample, _medianColor.getRgbValues());
+		double distance_sample_stop = Color.getDistance(_sample, _stopColor.getRgbValues());
 
 		// find the min :
-		double tempMin1 = Math.min(distance_Sample_line, distance_Sample_background);
-		double tempMin2 = Math.min(tempMin1, distance_Sample_median);
-		double min = Math.min(tempMin2, distance_Sample_stop);
+		double tempMin1 = Math.min(distance_sample_line, distance_sample_background);
+		double tempMin2 = Math.min(tempMin1, distance_sample_median);
+		double min = Math.min(tempMin2, distance_sample_stop);
 		 
-		 
+//		try {
+//		      FileWriter myWriter = new FileWriter("log.txt", true);
+//		      BufferedWriter bw = new BufferedWriter(myWriter);
+//		      bw.write("\n============================================\n");
+//		      bw.write("sample-median = " + distance_Sample_median + "\n");
+//		      bw.write("sample-line   = " + distance_Sample_line + "\n");
+//		      bw.write("sample-back   = " + distance_Sample_background + "\n");
+//		      bw.newLine();
+//		      bw.close();
+//		    } catch (IOException e) {
+//		      System.out.println("An error occurred [FileWriter]");
+//		      e.printStackTrace();
+//		    }
+
 		// identify the closest color :
 		if (min <= _MAXIMUM_TOLERATED_DISTANCE) {
-			if (min == distance_Sample_line) {
+			if (min == distance_sample_line) {
 				return "LINE";
-			} else if (min == distance_Sample_background) {
+			} else if (min == distance_sample_background) {
 				return "BACKGROUND";
-			} else {
+			} else if (min == distance_sample_median){
 				return "FRONTIER";
+				/*Adding of the condition ...&& min < _MAXIMUM... (mainly so that it does not stop when it passes 
+				 * over an intersection with another color (close to the start/finish color))*/
+			} else if (min == distance_sample_stop && min < _MAXIMUM_TOLERATED_DISTANCE / 4 && distance_sample_median > 6 * min) return "STOP";
+		} else
+			{
+			if (min == distance_sample_stop && min < _MAXIMUM_TOLERATED_DISTANCE / 4 && distance_sample_median > 6 * min) return "STOP";
+			
+			// OTHER COLOR (And very far from the target color (the median) too)
+			//else if (distance_sample_median > _MAXIMUM_TOLERATED_DISTANCE) return "STOP";// todo: delete this line (if good)
 			}
-		} else {
-			if (distance_Sample_stop < _MAXIMUM_TOLERATED_DISTANCE) return "STOP";
-			return "OTHER";
-		}
+		return "OTHER";
 	}
 
 	public static float[] getAverageColor(ArrayList<Color> arrayOfColors) {
@@ -91,10 +113,10 @@ public class Color {
 		float totalBlue = 0;
 		int counter = 0;
 
-		for (Color arrayOfColor : arrayOfColors) {
-			totalRed += arrayOfColor.getRgbValues()[0];
-			totalGreen += arrayOfColor.getRgbValues()[1];
-			totalBlue += arrayOfColor.getRgbValues()[2];
+		for (Color color : arrayOfColors) {
+			totalRed += color.getRgbValues()[0];
+			totalGreen += color.getRgbValues()[1];
+			totalBlue += color.getRgbValues()[2];
 			counter++;
 		}
 
@@ -133,9 +155,35 @@ public class Color {
 				float[] my_sample = new float[_sampleProvider.sampleSize()];
 
 				_sampleProvider.fetchSample(my_sample, 0);
+				
+//				try {
+//				      FileWriter myWriter = new FileWriter("RGB.txt", true);
+//				      BufferedWriter bw = new BufferedWriter(myWriter);
+//				      bw.write("\n--------------------------------------------\nBEFORE:\n");
+//				      bw.write("R ; G ; B = " + my_sample[0] + " ; " + my_sample[1] + " ; "+ my_sample[2] + "\n");
+//				      bw.newLine();
+//				      bw.close();
+//				    } catch (IOException e) {
+//				      System.out.println("An error occurred [FileWriter]");
+//				      e.printStackTrace();
+//				    }
+				
 				my_sample[0] = my_sample[0] * 255;
 				my_sample[1] = my_sample[1] * 255;
 				my_sample[2] = my_sample[2] * 255;
+//				
+//				try {
+//				      FileWriter myWriter = new FileWriter("RGB.txt", true);
+//				      BufferedWriter bw = new BufferedWriter(myWriter);
+//				      bw.write("\n++++++++++++++++++++++++++++++++++++++++++++\nAFTER:\n");
+//				      bw.write("R ; G ; B = " + my_sample[0] + " ; " + my_sample[1] + " ; "+ my_sample[2] + "\n");
+//				      bw.newLine();
+//				      bw.write("\n############################################\n\n");
+//				      bw.close();
+//				    } catch (IOException e) {
+//				      System.out.println("An error occurred [FileWriter]");
+//				      e.printStackTrace();
+//				    }
 
 				return my_sample;
 	}
