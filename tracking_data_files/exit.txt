@@ -1,0 +1,10 @@
+
+============================================
+listOfLearnedColors.size() = 4
+the_closest_color  = STOP
+Last fetched Denormalized Sample  = 8 ; 33 ; 10
+sample_median_distance  = 31.029381395149098
+distance from sample to closest color = 4.668712349245775
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+

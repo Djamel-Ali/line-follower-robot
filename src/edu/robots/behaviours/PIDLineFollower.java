@@ -136,36 +136,31 @@ public class PIDLineFollower {
 //----------------------------------------------------------------------------------
 
 //----------------------------------------------------------------------------------
-		
+/*
 // ** PI: 
 // *  Avec P : robot réagissant Proportionnellement à la valeur de l'erreur.
 // *  Sans 'La dérivée' le robot n'anticipe pas l'avenir 
 // * (les bonnes valeurs pour l'algo PI définies à partir de plusieurs essais) (avec integral = 0.9f)
 
-//				target_power = (int) (0.239f * getAverageMaxMotorSpeed(leftMotor, rightMotor));
-//				proportionality_constant_P = 0.07f * avg_slope;
-//				proportionality_constant_I = 0.007f * avg_slope;
+				target_power = (int) (0.239f * getAverageMaxMotorSpeed(leftMotor, rightMotor));
+				proportionality_constant_P = 0.07f * avg_slope;
+				proportionality_constant_I = 0.007f * avg_slope;
 
+*/
 //----------------------------------------------------------------------------------
 
 //----------------------------------------------------------------------------------
-
+///*
 
 // * PID program : robot (réagissant Proportionnellement à la valeur de l'erreur) avec mémoire (Integral) et capacité d'anticiper l'avenir (Dérivé)
 // * (paramètres définis à partir de plusieurs essais)
-// * Moyenne du dt = 0,773679996
-		 
-//				target_power = (int) (0.17f * getAverageMaxMotorSpeed(leftMotor, rightMotor));// tp= 0.3f*... est bonne aussi au lieu de 0.17f
-//				proportionality_constant_P = 0.1543749f * avg_slope; // (kp = kc = 0.16f * avg_slope; Tp=0.17f*max_speed)~~~~(kp= kc = 0.154374961*slope; Tp=0.17f*max_speed)
-//				proportionality_constant_I = 0.007f * avg_slope;
-//				proportionality_constant_D = 0.5 * avg_slope;
 				
-				target_power = (int) (0.17f * getAverageMaxMotorSpeed(leftMotor, rightMotor));// tp= 0.3f*... est bonne aussi au lieu de 0.17f
-				proportionality_constant_P = 0.09f * avg_slope; // (kp = kc = 0.16f * avg_slope; Tp=0.17f*max_speed)~~~~(kp= kc = 0.154374961*slope; Tp=0.17f*max_speed)
-				proportionality_constant_I = 0.007f * avg_slope;
-				proportionality_constant_D = 0.5 * avg_slope;
+				target_power = (int) (0.233f * getAverageMaxMotorSpeed(leftMotor, rightMotor));
+				proportionality_constant_P = 0.134f * avg_slope; 
+				proportionality_constant_I = 0.0015f * avg_slope;
+				proportionality_constant_D = 0.99 * avg_slope;
 
-
+//*/
 //----------------------------------------------------------------------------------
 
 //----------------------------------------------------------------------------------
@@ -212,17 +207,17 @@ public class PIDLineFollower {
 			the_closest_color = Color.getTheClosestColor(sample, lineColor, backgroundColor, medianColor,
 					stopColor, maximum_tolerated_distance);
 			
-			try {
-				FileWriter myWriter = new FileWriter("log.txt", true);
-				BufferedWriter bw = new BufferedWriter(myWriter);
-				bw.write("\nSample = [ " + (int) sample[0] + " ; " + (int) sample[1] + " ; " + (int) sample[2] + "\n");
-				bw.write("\nThe closest color = " + the_closest_color + "\n");
-				bw.newLine();
-				bw.close();
-			} catch (IOException e) {
-				System.out.println("An error occurred.");
-				e.printStackTrace();
-			}
+//			try {
+//				FileWriter myWriter = new FileWriter("log.txt", true);
+//				BufferedWriter bw = new BufferedWriter(myWriter);
+//				bw.write("\nThe closest color = " + the_closest_color + "\n");
+//				bw.write("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
+//				bw.newLine();
+//				bw.close();
+//			} catch (IOException e) {
+//				System.out.println("An error occurred.");
+//				e.printStackTrace();
+//			}
 
 
 			if (the_closest_color.equalsIgnoreCase(lineColor.getName()))
@@ -273,6 +268,11 @@ public class PIDLineFollower {
 
 		} while (Button.ESCAPE.isUp());
 		
+		// stop motors (Esc has been clicked, or STOP_COLOR or OTHER color has been detected)
+		leftMotor.stop();
+		rightMotor.stop();
+		Sound.twoBeeps();
+		
 		// just to update the output values in "exit.txt
 		the_closest_color = Color.getTheClosestColor(sample, lineColor, backgroundColor, medianColor,
 				stopColor, maximum_tolerated_distance);
@@ -297,10 +297,6 @@ public class PIDLineFollower {
 		      e.printStackTrace();
 		    }
 		
-		Sound.twoBeeps();
-		// stop motors (Esc has been clicked, or STOP_COLOR or OTHER color has been detected)
-		leftMotor.stop();
-		rightMotor.stop();
 	}
 
 	private void setMotorsSpeed(float _leftMotorSpeed, float _rightMotorSpeed) {

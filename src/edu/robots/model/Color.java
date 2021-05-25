@@ -74,9 +74,11 @@ public class Color {
 //		      FileWriter myWriter = new FileWriter("log.txt", true);
 //		      BufferedWriter bw = new BufferedWriter(myWriter);
 //		      bw.write("\n============================================\n");
-//		      bw.write("sample-median = " + distance_Sample_median + "\n");
-//		      bw.write("sample-line   = " + distance_Sample_line + "\n");
-//		      bw.write("sample-back   = " + distance_Sample_background + "\n");
+//		      bw.write("\nSample = [ " + (int) _sample[0] + " ; " + (int) _sample[1] + " ; " + (int) _sample[2] + " ]\n");
+//		      bw.write("Distance : sample-median     = " + distance_sample_median + "\n");
+//		      bw.write("Distance : sample-line       = " + distance_sample_line + "\n");
+//		      bw.write("Distance : sample-background = " + distance_sample_background + "\n");
+//		      bw.write("\n--------------------------------------------\n");
 //		      bw.newLine();
 //		      bw.close();
 //		    } catch (IOException e) {
@@ -156,34 +158,9 @@ public class Color {
 
 				_sampleProvider.fetchSample(my_sample, 0);
 				
-//				try {
-//				      FileWriter myWriter = new FileWriter("RGB.txt", true);
-//				      BufferedWriter bw = new BufferedWriter(myWriter);
-//				      bw.write("\n--------------------------------------------\nBEFORE:\n");
-//				      bw.write("R ; G ; B = " + my_sample[0] + " ; " + my_sample[1] + " ; "+ my_sample[2] + "\n");
-//				      bw.newLine();
-//				      bw.close();
-//				    } catch (IOException e) {
-//				      System.out.println("An error occurred [FileWriter]");
-//				      e.printStackTrace();
-//				    }
-				
 				my_sample[0] = my_sample[0] * 255;
 				my_sample[1] = my_sample[1] * 255;
 				my_sample[2] = my_sample[2] * 255;
-//				
-//				try {
-//				      FileWriter myWriter = new FileWriter("RGB.txt", true);
-//				      BufferedWriter bw = new BufferedWriter(myWriter);
-//				      bw.write("\n++++++++++++++++++++++++++++++++++++++++++++\nAFTER:\n");
-//				      bw.write("R ; G ; B = " + my_sample[0] + " ; " + my_sample[1] + " ; "+ my_sample[2] + "\n");
-//				      bw.newLine();
-//				      bw.write("\n############################################\n\n");
-//				      bw.close();
-//				    } catch (IOException e) {
-//				      System.out.println("An error occurred [FileWriter]");
-//				      e.printStackTrace();
-//				    }
 
 				return my_sample;
 	}
