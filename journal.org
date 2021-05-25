@@ -78,7 +78,7 @@
 *** Essayer d'améliorer la vitesse (particulièrement sur les lignes droites).
 * 14/04/2021
 ** Fait :
-*** Enregistrement de vidéos (liens : PID Algorithm => https://www.youtube.com/watch?v=FhZJFoExKqs , PI Algorithm => https://www.youtube.com/watch?v=XVTuLtFHmvY).
+*** Enregistrement de vidéos (liens : PID Algorithm => https://www.youtube.com/watch?v=FhZJFoExKqs , PID Algorithm => https://youtu.be/HSZSpzNoKsw , PI Algorithm => https://www.youtube.com/watch?v=XVTuLtFHmvY).
 *** Vitesse améliorée (mais toujours en train d'essayer d'en faire mieux).
 ** À Faire :
 *** Mémoriser la couleur de ligne de départ/arrivée pour s'arrêter une fois le tour est fait.

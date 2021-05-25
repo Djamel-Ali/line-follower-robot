@@ -60,6 +60,9 @@ $ scp -c aes256-cbc root@10.42.0.223:/home/lejos/programs/file_name.txt /home/us
 ```
 _(Some examples of these files are available [here](/tracking_data_files))._
 
+## Videos
+
+See [here](https://youtu.be/HSZSpzNoKsw) videos of a line-follower robot programmed with this code (links to other videos : https://www.youtube.com/watch?v=FhZJFoExKqs , https://www.youtube.com/watch?v=XVTuLtFHmvY).
 ___
 ___
 
