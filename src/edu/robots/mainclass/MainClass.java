@@ -8,6 +8,7 @@ import edu.robots.actuators.RunMotors;
 import edu.robots.behaviours.PIDLineFollower;
 import edu.robots.helloworld.HelloWorld;
 import edu.robots.sensors.LearningColors;
+import lejos.hardware.Button;
 
 public class MainClass {
 
@@ -32,8 +33,8 @@ public class MainClass {
 		// 'S' shape line follower (Using PID algorithm)
 		PIDLineFollower PIDlineFollower = new PIDLineFollower();
 		PIDLineFollower.getLearningColors().startLearning(NB_OF_COLORS_TO_LEARN, NB_OF_MEASURES_PER_COLOR);
+		if (Button.ESCAPE.isDown()) return;
 		PIDLineFollower.getReady();
 		PIDlineFollower.followTheLine();
 	}
-
 }

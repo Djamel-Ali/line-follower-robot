@@ -1,0 +1,12 @@
+
+############################################
+line Color = [Color], name='LINE', rgbValues=[11.0, 22.75, 26.9375]
+background Color   = [Color], name='BACKGROUND', rgbValues=[76.625, 76.3125, 50.0625]
+median Color   = [Color], name='FRONTIER', rgbValues=[38.59375, 46.265625, 36.40625]
+stop Color   = [Color], name='STOP', rgbValues=[8.625, 37.875, 10.875]
+max distance   = 50.35557404985693
+maximum_tolerated_distance   = 62.944467562321165
+average slope   = 15.397212003801053
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+

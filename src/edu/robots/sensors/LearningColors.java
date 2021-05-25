@@ -25,7 +25,7 @@ public class LearningColors {
 	private static Color average_color;
 
 	// The maximum distance allowed between 2 mesures of a same color.
-	private static final double MAX_ALLOWED_DISTANCE = 70;
+	private static final double MAX_ALLOWED_DISTANCE = 20;
 
 	// For Robot Configuration
 	public static EV3ColorSensor ev3ColorSensor;
@@ -53,6 +53,7 @@ public class LearningColors {
 		int sampleSize = sampleProvider.sampleSize();
 		float[] sample = new float[sampleSize];
 		ArrayList<Color> acceptable_measures = new ArrayList<>();
+		int pressed = 0;
 
 		// The for loop which allows to switch from learning one color to another (in
 		// order to learn 'x' color at the end)
@@ -71,18 +72,21 @@ public class LearningColors {
 
 						// While no one has pressed the OK button yet
 						LCD.drawString("'OK' to capture : ", 0, 4);
-						Button.ENTER.waitForPress();
+						Button.waitForAnyPress(40000); // timeout = 40s
+						pressed = Button.getButtons();
+						if(pressed == Button.ID_ENTER) {
+							sample = Color.fetchDenormalizedSample(sampleProvider);
 
-						// fetching sample...
-						sample = Color.fetchDenormalizedSample(sampleProvider);
-
-						// // First we check that it is a valid RGB triplet.
-						if (isInvalidRGBTriplet(sample)) {
-							LCD.clear();
-							LCD.drawString("RGB invalid !", 1, 2);
-							Delay.msDelay(2000);
+							// // First we check that it is a valid RGB triplet.
+							if (isInvalidRGBTriplet(sample)) {
+								LCD.clear();
+								LCD.drawString("RGB invalid !", 1, 2);
+								Delay.msDelay(2000);
+							}
 						}
+						else if (pressed == Button.ID_ESCAPE) break;
 					} while (isInvalidRGBTriplet(sample));
+					if (pressed == Button.ID_ESCAPE) break;
 
 					// if it's the 1st measure, we put it directly in the array of measures
 					if (measure_counter == 0) {
@@ -136,7 +140,10 @@ public class LearningColors {
 					Arrays.fill(sample, 0);
 
 				} while (distance > MAX_ALLOWED_DISTANCE);
+				if (pressed == Button.ID_ESCAPE) break;
 			}
+			if (pressed == Button.ID_ESCAPE) break;
+			
 			// Save the average values of the color just learned.
 			listOfLearnedColors.add(color_index, new Color("COLOR_" + color_index));
 			listOfLearnedColors.get(color_index).setRgbValues(average_color.getRgbValues());

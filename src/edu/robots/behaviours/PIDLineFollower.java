@@ -1,5 +1,8 @@
 package edu.robots.behaviours;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import edu.robots.mainclass.MainClass;
@@ -10,6 +13,7 @@ import lejos.hardware.Sound;
 import lejos.hardware.lcd.LCD;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
 import lejos.hardware.port.MotorPort;
+import lejos.utility.Delay;
 
 
 public class PIDLineFollower {
@@ -20,7 +24,8 @@ public class PIDLineFollower {
 	
 	/* (it's equal to 1 when he's on the line, -1 on the background, 0 on the frontier (50% line, 50% background)).*/
 	private static int I_AM_IN_LINE = 0;
-	private static final double MAXIMUM_TOLERATED_DISTANCE = 85; /*between two colors*/
+	private static double maximum_tolerated_distance = 53; /*between two colors (85)*/
+
 	private static float[] sample;
 	private static final LearningColors learningColors = new LearningColors();
 	private static ArrayList<Color> listOfLearnedColors;
@@ -56,6 +61,16 @@ public class PIDLineFollower {
 	public static void getReady() {
 		// get the list of learned colors
 		listOfLearnedColors = LearningColors.getListOfLearnedColors();
+		
+		// If the learning phase has been cancelled/interrupted, it is not possible to follow the line, so we exit.s
+				if (listOfLearnedColors.size() != 4) 
+					{
+					LCD.clear();
+					LCD.drawString("(learning phase not completed)", 0, 4);
+					LCD.drawString("[EXIT].", 1, 5);
+					Delay.msDelay(2000);
+					return;
+					}
 
 		// Color identification
 		
@@ -75,11 +90,34 @@ public class PIDLineFollower {
 		stopColor = listOfLearnedColors.get(3);
 		stopColor.setName("STOP");
 		
+		
 		// Calcule de la distance max qui peut être enregistrée:
 		double max_distance = Math.max(Color.getDistance(lineColor.getRgbValues(), medianColor.getRgbValues()),
 				Color.getDistance(backgroundColor.getRgbValues(), medianColor.getRgbValues()));
-
+		
+		// Update maximum_tolerated_distance
+		set_maximum_tolerated_distance(5*max_distance/4);
 		double avg_slope = getAverageMaxMotorSpeed(leftMotor, rightMotor) / max_distance;
+		
+		// add to info_field_race.txt file these colors just learned
+				try {
+					FileWriter myWriter = new FileWriter("info_field_race.txt", true);
+					BufferedWriter bw = new BufferedWriter(myWriter);
+					bw.write("\n############################################\n");
+					bw.write("line Color = " + lineColor + "\n");
+					bw.write("background Color   = " + backgroundColor + "\n");
+					bw.write("median Color   = " + medianColor + "\n");
+					bw.write("stop Color   = " + stopColor + "\n");
+					bw.write("max distance   = " + max_distance + "\n");
+					bw.write("maximum_tolerated_distance   = " + maximum_tolerated_distance + "\n");
+					bw.write("average slope   = " + avg_slope + "\n");
+					bw.write("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
+					bw.newLine();
+					bw.close();
+				} catch (IOException e) {
+					System.out.println("An error occurred.");
+					e.printStackTrace();
+				}
 
 //----------------------------------------------------------------------------------
 /*
@@ -98,7 +136,7 @@ public class PIDLineFollower {
 //----------------------------------------------------------------------------------
 
 //----------------------------------------------------------------------------------
-		
+/*
 // ** PI: 
 // *  Avec P : robot réagissant Proportionnellement à la valeur de l'erreur.
 // *  Sans 'La dérivée' le robot n'anticipe pas l'avenir 
@@ -108,21 +146,21 @@ public class PIDLineFollower {
 				proportionality_constant_P = 0.07f * avg_slope;
 				proportionality_constant_I = 0.007f * avg_slope;
 
+*/
 //----------------------------------------------------------------------------------
 
 //----------------------------------------------------------------------------------
-/*
+///*
 
 // * PID program : robot (réagissant Proportionnellement à la valeur de l'erreur) avec mémoire (Integral) et capacité d'anticiper l'avenir (Dérivé)
 // * (paramètres définis à partir de plusieurs essais)
-// * Moyenne du dt = 0,773679996
-		 
-				target_power = (int) (0.17f * getAverageMaxMotorSpeed(leftMotor, rightMotor));// tp= 0.3f*... est bonne aussi au lieu de 0.17f
-				proportionality_constant_P = 0.1543749f * avg_slope; // (kp = kc = 0.16f * avg_slope; Tp=0.17f*max_speed)~~~~(kp= kc = 0.154374961*slope; Tp=0.17f*max_speed)
-				proportionality_constant_I = 0.007f * avg_slope;
-				proportionality_constant_D = 0.5 * avg_slope;
+				
+				target_power = (int) (0.233f * getAverageMaxMotorSpeed(leftMotor, rightMotor));
+				proportionality_constant_P = 0.134f * avg_slope; 
+				proportionality_constant_I = 0.0015f * avg_slope;
+				proportionality_constant_D = 0.99 * avg_slope;
 
-*/
+//*/
 //----------------------------------------------------------------------------------
 
 //----------------------------------------------------------------------------------
@@ -152,6 +190,8 @@ public class PIDLineFollower {
 	}
 
 	public void followTheLine() {
+		// local variables
+		double sample_median_distance = 0;
 
 		LCD.clear();
 		LCD.drawString("FOLLOWING LINE...", 1, 4);
@@ -165,7 +205,20 @@ public class PIDLineFollower {
 			// Calculate the distances (in order to find out which color this sample is
 			// closest to (line or background or median or stop or other).
 			the_closest_color = Color.getTheClosestColor(sample, lineColor, backgroundColor, medianColor,
-					stopColor, MAXIMUM_TOLERATED_DISTANCE);
+					stopColor, maximum_tolerated_distance);
+			
+//			try {
+//				FileWriter myWriter = new FileWriter("log.txt", true);
+//				BufferedWriter bw = new BufferedWriter(myWriter);
+//				bw.write("\nThe closest color = " + the_closest_color + "\n");
+//				bw.write("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
+//				bw.newLine();
+//				bw.close();
+//			} catch (IOException e) {
+//				System.out.println("An error occurred.");
+//				e.printStackTrace();
+//			}
+
 
 			if (the_closest_color.equalsIgnoreCase(lineColor.getName()))
 				I_AM_IN_LINE = 1; /* il faut qu'il tourne à droite (car c'est un suiveur de ligne à droite) */
@@ -175,11 +228,15 @@ public class PIDLineFollower {
 			
 			else if (the_closest_color.equalsIgnoreCase(medianColor.getName()))
 				I_AM_IN_LINE = 0; /* il faut qu'il continue tout droit */
+			else if (the_closest_color.equalsIgnoreCase(stopColor.getName())) break;
 			
-			// if OTHER OR STOP_COLOR
-			else break;
+			// if OTHER
+			else {
+				I_AM_IN_LINE = 0;
+				Sound.buzz();
+			}
 
-			double sample_median_distance = Color.getDistance(sample, medianColor.getRgbValues());
+			sample_median_distance = Color.getDistance(sample, medianColor.getRgbValues());
 
 			// calculate the error
 			error = sample_median_distance * I_AM_IN_LINE;
@@ -208,15 +265,38 @@ public class PIDLineFollower {
 			// update last error
 			last_error = error;
 			
-			if (Button.ESCAPE.isDown())
-				break;
 
 		} while (Button.ESCAPE.isUp());
 		
-		Sound.twoBeeps();
 		// stop motors (Esc has been clicked, or STOP_COLOR or OTHER color has been detected)
 		leftMotor.stop();
 		rightMotor.stop();
+		Sound.twoBeeps();
+		
+		// just to update the output values in "exit.txt
+		the_closest_color = Color.getTheClosestColor(sample, lineColor, backgroundColor, medianColor,
+				stopColor, maximum_tolerated_distance);
+		
+		try {
+		      FileWriter myWriter = new FileWriter("exit.txt", true);
+		      BufferedWriter bw = new BufferedWriter(myWriter);
+		      bw.write("\n============================================\n");
+		      bw.write("listOfLearnedColors.size() = " + listOfLearnedColors.size() + "\n");
+		      bw.write("the_closest_color  = " + the_closest_color + "\n");
+		      bw.write("Last fetched Denormalized Sample  = " + (int)sample[0] + " ; " + (int)sample[1] + " ; " + (int)sample[2] + "\n");
+		      bw.write("sample_median_distance  = " + sample_median_distance + "\n");
+		      if (the_closest_color.equalsIgnoreCase(stopColor.getName())) {
+		    	  double dis = Color.getDistance(sample, stopColor.getRgbValues());
+		    	  bw.write("distance from sample to closest color = " + dis + "\n");
+		      }
+		      bw.write("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
+		      bw.newLine();
+		      bw.close();
+		    } catch (IOException e) {
+		      System.out.println("An error occurred [FileWriter]");
+		      e.printStackTrace();
+		    }
+		
 	}
 
 	private void setMotorsSpeed(float _leftMotorSpeed, float _rightMotorSpeed) {
@@ -230,7 +310,7 @@ public class PIDLineFollower {
 			leftMotor.forward();
 			rightMotor.forward();
 		} else {
-			if (_leftMotorSpeed < 0 && _rightMotorSpeed > 0) {
+			if (_leftMotorSpeed <= 0 && _rightMotorSpeed > 0) {
 
 				_leftMotorSpeed = -_leftMotorSpeed;
 
@@ -241,7 +321,7 @@ public class PIDLineFollower {
 				
 				leftMotor.backward();
 				rightMotor.forward();
-			} else if (_rightMotorSpeed < 0 && _leftMotorSpeed > 0) {
+			} else if (_rightMotorSpeed <= 0 && _leftMotorSpeed > 0) {
 
 				_rightMotorSpeed = -_rightMotorSpeed;
 
@@ -287,5 +367,13 @@ public class PIDLineFollower {
 
 	public static LearningColors getLearningColors() {
 		return learningColors;
+	}
+	
+	public static double get_maximum_tolerated_distance() {
+		return maximum_tolerated_distance;
+	}
+
+	public static void set_maximum_tolerated_distance(double _maximum_tolerated_distance) {
+		maximum_tolerated_distance = _maximum_tolerated_distance;
 	}
 }
