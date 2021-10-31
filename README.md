@@ -85,5 +85,9 @@ https://docs.oracle.com/javase/8/docs/
 
 ___
 ___
---
-##### By : Djamel ALI & Hamza IDRISSOU
+
+## License & copyright
+
+© Djamel ALI, Université de Paris
+
+Licensed under the [MIT License](LICENSE).
